@@ -28,7 +28,6 @@ def copy_item(source: Path, destination_root: Path, relative_to: Path) -> None:
 def scan_folder(source: Path, destination_root: Path, relative_to: Path | None = None) -> None:
     if relative_to is None:
         relative_to = source
-        clear_destination(destination_root)
 
     for entry in source.iterdir():
         copy_item(entry, destination_root, relative_to)

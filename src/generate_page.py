@@ -17,3 +17,13 @@ def generate_page(from_path: Path, template_path: Path, dest_path: Path):
 
     dest_path.parent.mkdir(parents=True, exist_ok=True)
     dest_path.write_text(template_content)
+
+def generate_page_recursively(source: Path, template_path: Path, target_root: Path, source_root: Path):
+    for item in source.iterdir():
+        if item.is_file():
+            relative_path = item.relative_to(source_root)
+            target = (target_root / relative_path).with_suffix(".html")
+            generate_page(item, template_path, target)
+
+        elif item.is_dir():
+            generate_page_recursively(item, template_path, target_root, source_root)
