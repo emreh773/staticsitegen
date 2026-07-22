@@ -2,6 +2,7 @@ import unittest
 
 from markdown_blocks import (
         block_to_block_type,
+        extract_title,
         markdown_to_blocks,
         block_to_block_type,
         BlockType,
@@ -106,5 +107,28 @@ This is the same paragraph on a new line
             html,
             "<div><pre><code>This is text that _should_ remain\nthe **same** even with inline stuff\n</code></pre></div>",
         )
+
+    def test_extract_title(self):
+        md = """
+    # My Title
+    """
+        title = extract_title(md)
+        self.assertEqual(title, "My Title")
+    
+    def test_extract_title_no_title(self):
+        md = """
+    This is a paragraph without a title.
+    """
+        with self.assertRaises(Exception) as context:
+            extract_title(md)
+        self.assertEqual(str(context.exception), "No title found in the markdown content.")
+
+    def test_extract_title_with_whitespace(self):
+        md = """
+    #   My Title with Whitespace
+    """
+        title = extract_title(md)
+        self.assertEqual(title, "My Title with Whitespace")
+
 if __name__ == "__main__":
     unittest.main()

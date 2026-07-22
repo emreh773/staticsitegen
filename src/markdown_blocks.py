@@ -35,9 +35,9 @@ def block_to_block_type(block: str) -> BlockType:
     elif re.match(r"^```\n", block):
         if block.endswith("\n```"):
             return BlockType.CODE
-    elif re.match(r"^> ", block):
+    elif re.match(r"^>", block):
         block_lines = block.splitlines()
-        if all(re.match(r"^> ", line) for line in block_lines):
+        if all(re.match(r"^>", line) for line in block_lines):
             return BlockType.QUOTE
     return BlockType.PARAGRAPH
 
@@ -129,3 +129,11 @@ def paragraph_to_html_node(paragraph: str) -> ParentNode:
     for node in text_nodes:
         children.append(text_node_to_html_node(node))
     return ParentNode(tag="p", children=children)
+
+def extract_title(markdown: str):
+    lines = markdown.splitlines()
+    for line in lines:
+        line = line.strip()
+        if line.startswith("# "):
+            return line[2:].strip()
+    raise Exception("No title found in the markdown content.")
