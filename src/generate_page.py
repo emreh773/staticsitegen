@@ -2,6 +2,7 @@ from pathlib import Path
 
 from markdown_blocks import markdown_to_html_node, extract_title
 from htmlnode import HTMLNode
+from main import basepath
 
 def generate_page(from_path: Path, template_path: Path, dest_path: Path):
     print(f"Generating page from {from_path} to {dest_path} using {template_path}")
